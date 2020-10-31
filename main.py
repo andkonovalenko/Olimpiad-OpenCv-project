@@ -28,9 +28,18 @@ def display_video_result():
         # detecting edges
         detected_edges = cv2.Canny(bilateral_filtered_image, 75, 200)
         # find contours
-        _, contours = cv2.findContours(detected_edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(detected_edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        cv2.imshow('frame', detected_edges)
+        contour_list = []
+        for contour in contours:
+            approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
+            area = cv2.contourArea(contour)
+            if (len(approx) > 8 & len(approx) < 23) & (area > 30):
+                print(len(approx))
+                contour_list.append(contour)
+
+        cv2.drawContours(frame, contour_list, -1, (255, 0, 0), 2)
+        cv2.imshow('frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
