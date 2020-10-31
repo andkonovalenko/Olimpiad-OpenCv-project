@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 def read_video_file():
-    filename = input()
+    filename = input("Enter video file name: ")
     return cv2.VideoCapture(filename)
 
 
