@@ -2,13 +2,18 @@ import cv2
 import numpy as np
 
 
+def write_capture_results(file_name, count_or_circles):
+    file = open(file_name + '.txt', "w+")
+    file.write("Count of circles: {0}".format(str(count_or_circles)))
+
+
 def save_video_result():
     filename = str(input("Enter path video to process: "))
-    output = str(input("Enter path to result video: "))
+    output = str(input("Enter filename result data: "))
 
     capture = cv2.VideoCapture(filename)
     fourcc = cv2.VideoWriter_fourcc('F', 'M', 'P', '4')
-    video_recorder = cv2.VideoWriter(output, fourcc, 20.0, (int(capture.get(3)), int(capture.get(4))))
+    video_recorder = cv2.VideoWriter(output + '.avi', fourcc, 20.0, (int(capture.get(3)), int(capture.get(4))))
     current_len_of_circles = 0
 
     while capture.isOpened():
@@ -49,11 +54,9 @@ def save_video_result():
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    write_capture_results(output, current_len_of_circles)
     capture.release()
     cv2.destroyAllWindows()
-
-def getTextInfo(fileName, count_or_circles):
-    pass
 
 
 # Press the green button in the gutter to run the script.
